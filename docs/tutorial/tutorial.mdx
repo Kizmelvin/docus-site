@@ -1,0 +1,306 @@
+---
+id: tutorial
+title: Building a Controlled Form
+slug: /tutorial
+---
+
+# Building a Type-Safe Controlled Form with React Hook Form and Zod
+
+Managing form state in React often involves writing repetitive boilerplate code and handling complex, unnecessary re-renders. This tutorial teaches you how to spin up a new React project and build a performant, type-safe form using React Hook Form and Zod for schema validation.
+
+By offloading validation logic from React's component state to a schema-based validation resolver, you maintain high UI performance while ensuring strict TypeScript enforcement across your inputs.
+
+## Prerequisites
+
+Before starting, ensure you have the following installed on your machine:
+
+- Node.js v18 or higher.
+- A package manager (npm comes bundled with Node.js).
+
+## Step-by-Step Implementation
+
+### Step 1: Initialize Your Project and Dependencies
+
+Initialize a new React project with TypeScript using Vite, move into the directory, and install the required core form-management packages.
+
+Run the following commands in your terminal:
+
+```bash
+# Initialize the Vite project template
+npm create vite@latest my-form-app -- --template react-ts
+
+# Move into the project directory and install React Hook Form, Zod, and the Hook Form resolver
+cd my-form-app
+npm install react-hook-form zod @hookform/resolvers
+```
+
+To run your starter application locally:
+
+```bash
+npm run dev
+```
+
+Open the provided local URL (http://localhost:5173) in your browser to verify it runs.
+
+### Step 2: Define Your Validation Schema
+
+Open your project in your code editor and navigate to `src/App.tsx`. Erase the default starter code completely.
+
+At the top of `App.tsx`, import your required packages and declare your Zod schema.
+
+> Developer Note: Keep this schema definition outside of your React component body. Moving it out prevents the schema object from being unnecessarily recreated on every component re-render.
+
+Add the following code to `src/App.tsx`:
+
+```tsx
+import React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+// 1. Define the validation constraints
+const userSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters"),
+  email: z.string().email("Invalid email address"),
+});
+
+// 2. Derive the TypeScript type directly from the Zod schema
+type UserFormData = z.infer<typeof userSchema>;
+```
+
+### Step 3: Initialize the useForm Hook
+
+Now, establish your component structure. Initialize the `useForm` hook inside your `App` component and pass the derived `UserFormData` type to enforce strict typing across your input registrations.
+
+Append this code directly below the schema in `App.tsx`:
+
+```tsx
+export default function App() {
+  // 3. Bind your schema resolver to React Hook Form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserFormData>({
+    resolver: zodResolver(userSchema),
+    defaultValues: {
+      username: "",
+      email: "",
+    },
+  });
+
+  // 4. Create your submission handler to receive validated data
+  const onSubmit = (data: UserFormData) => {
+    alert(JSON.stringify(data, null, 2));
+    console.log("Form Submitted Successfully:", data);
+  };
+
+  // Your return block goes here in the next step
+  return null;
+}
+```
+
+### Step 4: Build the Form UI in your return() Block
+
+Fill in your `return()` statement. Use the `register` function to bind your native HTML inputs to the form state.
+
+The `register` function uses the spread operator (`...`) to inject required handlers (`onChange`, `onBlur`, `ref`) into the element behind the scenes, eliminating manual event-handling boilerplate.
+
+Replace `return null;` inside your `App` component with the following code:
+
+```tsx
+return (
+  <div style={{ fontFamily: "sans-serif", padding: "40px" }}>
+    <h2>Registration Form</h2>
+
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      style={{
+        maxWidth: "400px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "12px",
+      }}
+    >
+      <div>
+        <label
+          htmlFor="username"
+          style={{ display: "block", marginBottom: "4px" }}
+        >
+          Username
+        </label>
+        <input
+          id="username"
+          {...register("username")}
+          style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
+        />
+        {errors.username && (
+          <p style={{ color: "red", fontSize: "12px", margin: "4px 0 0" }}>
+            {errors.username.message}
+          </p>
+        )}
+      </div>
+
+      <div>
+        <label
+          htmlFor="email"
+          style={{ display: "block", marginBottom: "4px" }}
+        >
+          Email
+        </label>
+        <input
+          id="email"
+          type="email"
+          {...register("email")}
+          style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
+        />
+        {errors.email && (
+          <p style={{ color: "red", fontSize: "12px", margin: "4px 0 0" }}>
+            {errors.email.message}
+          </p>
+        )}
+      </div>
+
+      <button
+        type="submit"
+        style={{
+          padding: "10px",
+          marginTop: "8px",
+          cursor: "pointer",
+          background: "#007bff",
+          color: "#fff",
+          border: "none",
+          borderRadius: "4px",
+        }}
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+);
+```
+
+### Complete Component Code
+
+Here is the entire content of your `src/App.tsx` file:
+
+```tsx
+import React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+// 1. Define the validation constraints
+const userSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters"),
+  email: z.string().email("Invalid email address"),
+});
+
+// 2. Derive the TypeScript type from the schema
+type UserFormData = z.infer<typeof userSchema>;
+
+export default function App() {
+  // 3. Initialize the useForm hook with your Zod schema resolver
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserFormData>({
+    resolver: zodResolver(userSchema),
+    defaultValues: {
+      username: "",
+      email: "",
+    },
+  });
+
+  // 4. Create the submit handler to process valid data
+  const onSubmit = (data: UserFormData) => {
+    alert(JSON.stringify(data, null, 2));
+    console.log("Form Submitted Successfully:", data);
+  };
+
+  return (
+    <div style={{ fontFamily: "sans-serif", padding: "40px" }}>
+      <h2>Registration Form</h2>
+
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        style={{
+          maxWidth: "400px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "12px",
+        }}
+      >
+        <div>
+          <label
+            htmlFor="username"
+            style={{ display: "block", marginBottom: "4px" }}
+          >
+            Username
+          </label>
+          <input
+            id="username"
+            {...register("username")}
+            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
+          />
+          {errors.username && (
+            <p style={{ color: "red", fontSize: "12px", margin: "4px 0 0" }}>
+              {errors.username.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <label
+            htmlFor="email"
+            style={{ display: "block", marginBottom: "4px" }}
+          >
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            {...register("email")}
+            style={{ width: "100%", padding: "8px", boxSizing: "border-box" }}
+          />
+          {errors.email && (
+            <p style={{ color: "red", fontSize: "12px", margin: "4px 0 0" }}>
+              {errors.email.message}
+            </p>
+          )}
+        </div>
+
+        <button
+          type="submit"
+          style={{
+            padding: "10px",
+            marginTop: "8px",
+            cursor: "pointer",
+            background: "#007bff",
+            color: "#fff",
+            border: "none",
+            borderRadius: "4px",
+          }}
+        >
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+}
+```
+
+### Troubleshooting
+
+- **Error 1: Input values are not being captured or validated**
+  - Cause: Passing your `register` function reference incorrectly into your JSX without using the spread operator (`register="username"`).
+  - Solution: Always invoke the spread operator to correctly apply your handlers: `<input {...register("username")} />`.
+
+- **Error 2: Your form submits and ignores your validation errors**
+  - Cause: Passing your submission handler directly to the standard HTML `<form>` element without wrapping it in React Hook Form's interpreter.
+  - Solution: Bind your handler using `handleSubmit`: `<form onSubmit={handleSubmit(onSubmit)}>`.
+
+- **Error 3: State updates feel slow or cause continuous re-renders**
+  - Cause: Declaring your validation schema inside your main component scope, forcing the validation tree to rebuild on every render cycle.
+  - Solution: Declare your validation schema variable out of your functional component definition to optimize memory usage.
