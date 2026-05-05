@@ -1,0 +1,20 @@
+{
+  "id": "tutorial/tutorial",
+  "title": "Building a Controlled Form",
+  "description": "Managing form state in React often involves writing repetitive boilerplate code and handling complex, unnecessary re-renders. This tutorial teaches you how to spin up a new React project and build a performant, type-safe form using React Hook Form and Zod for schema validation.",
+  "source": "@site/docs/tutorial/tutorial.mdx",
+  "sourceDirName": "tutorial",
+  "slug": "/tutorial",
+  "permalink": "/docus-site/tutorial",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/tutorial/tutorial.mdx",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "tutorial",
+    "title": "Building a Controlled Form",
+    "slug": "/tutorial"
+  },
+  "sidebar": "tutorialSidebar"
+}

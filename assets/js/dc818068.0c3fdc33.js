@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkmy_docs_site=globalThis.webpackChunkmy_docs_site||[]).push([[775],{3618(s){s.exports=JSON.parse('{"metadata":{"permalink":"/docus-site/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":4,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);

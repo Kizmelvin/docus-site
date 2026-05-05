@@ -1,0 +1,24 @@
+{
+  "id": "api-reference",
+  "title": "Core REST API Reference",
+  "description": "Authentication Header",
+  "source": "@site/docs/api_reference.mdx",
+  "sourceDirName": ".",
+  "slug": "/api-reference",
+  "permalink": "/docs/api-reference",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/api_reference.mdx",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "api-reference",
+    "title": "Core REST API Reference",
+    "slug": "/api-reference"
+  },
+  "sidebar": "tutorialSidebar",
+  "next": {
+    "title": "Welcome to the Developer Hub",
+    "permalink": "/docs/"
+  }
+}

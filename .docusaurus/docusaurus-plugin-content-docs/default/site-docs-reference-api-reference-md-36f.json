@@ -1,0 +1,28 @@
+{
+  "id": "reference/api-reference",
+  "title": "Core REST API Reference",
+  "description": "Authentication Header",
+  "source": "@site/docs/reference/api_reference.md",
+  "sourceDirName": "reference",
+  "slug": "/api-reference",
+  "permalink": "/docs/api-reference",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/docs/reference/api_reference.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "api-reference",
+    "title": "Core REST API Reference",
+    "slug": "/api-reference"
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Welcome to the Developer Hub",
+    "permalink": "/docs/"
+  },
+  "next": {
+    "title": "Building a Type-Safe Controlled Form",
+    "permalink": "/docs/tutorial"
+  }
+}
